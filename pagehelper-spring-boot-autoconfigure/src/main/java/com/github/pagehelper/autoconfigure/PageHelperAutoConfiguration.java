@@ -35,7 +35,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * 自定注入分页插件
@@ -44,31 +44,54 @@ import java.util.List;
  */
 @Configuration
 @ConditionalOnBean(SqlSessionFactory.class)
-@EnableConfigurationProperties({PageHelperProperties.class, PageHelperStandardProperties.class})
+@EnableConfigurationProperties({PageHelperProperties.class, PageHelperStandardProperties.class,
+    SqlSessionFactoryIsolatedPageHelperProperties.class})
 @AutoConfigureAfter(MybatisAutoConfiguration.class)
 //@Import(PageHelperProperties.class)
 @Lazy(false)
 public class PageHelperAutoConfiguration implements InitializingBean {
 
-    private final List<SqlSessionFactory> sqlSessionFactoryList;
+    private final Map<String, SqlSessionFactory> sqlSessionFactoryMap;
 
     private final PageHelperProperties properties;
 
-    public PageHelperAutoConfiguration(List<SqlSessionFactory> sqlSessionFactoryList, PageHelperStandardProperties standardProperties) {
-        this.sqlSessionFactoryList = sqlSessionFactoryList;
+    private final SqlSessionFactoryIsolatedPageHelperProperties sqlSessionFactoryIsolatedPageHelperProperties;
+
+    public PageHelperAutoConfiguration(Map<String, SqlSessionFactory> sqlSessionFactoryMap,
+        PageHelperStandardProperties standardProperties,
+        SqlSessionFactoryIsolatedPageHelperProperties sqlSessionFactoryIsolatedPageHelperProperties) {
+        this.sqlSessionFactoryMap = sqlSessionFactoryMap;
         this.properties = standardProperties.getProperties();
+        this.sqlSessionFactoryIsolatedPageHelperProperties = sqlSessionFactoryIsolatedPageHelperProperties;
     }
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        PageInterceptor interceptor = new PageInterceptor();
-        interceptor.setProperties(this.properties);
-        for (SqlSessionFactory sqlSessionFactory : sqlSessionFactoryList) {
+        // prepare default interceptor
+        PageInterceptor defaultInterceptor = new PageInterceptor();
+        defaultInterceptor.setProperties(this.properties);
+        // prepare isolated properties
+        Map<String, SqlSessionFactoryIsolatedPageHelperProperties.PageHelperDedicatedProperties> propertiesMap =
+            sqlSessionFactoryIsolatedPageHelperProperties.getSqlSessionFactoryGroup();
+        sqlSessionFactoryMap.forEach((sqlSessionFactoryBeanName, sqlSessionFactory) -> {
+            // try to find dedicated properties
+            SqlSessionFactoryIsolatedPageHelperProperties.PageHelperDedicatedProperties dedicatedProperties =
+                null == propertiesMap ? null : propertiesMap.get(sqlSessionFactoryBeanName);
+            PageInterceptor interceptor;
+            if (null == dedicatedProperties) {
+                // use default interceptor
+                interceptor = defaultInterceptor;
+            } else {
+                // build dedicated interceptor
+                interceptor = new PageInterceptor();
+                interceptor.setProperties(dedicatedProperties.getProperties());
+            }
+            // register interceptor
             org.apache.ibatis.session.Configuration configuration = sqlSessionFactory.getConfiguration();
             if (!containsInterceptor(configuration, interceptor)) {
                 configuration.addInterceptor(interceptor);
             }
-        }
+        });
     }
 
     /**
