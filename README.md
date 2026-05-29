@@ -16,13 +16,17 @@ Add the following dependency to your pom.xml:
 <dependency>
   <groupId>com.github.pagehelper</groupId>
   <artifactId>pagehelper-spring-boot-starter</artifactId>
-  <version>4.0.0</version>
+  <version>4.1.0</version>
 </dependency>
 ```
 
 ## 微信公众号
 
 <img src="wx_mybatis.jpg" height="300"/>
+
+## v4.1.0 - 2026-05-29
+
+- 将最低支持 JDK 版本降级到 JDK17
 
 ## v4.0.0 - 2026-04-23
 
