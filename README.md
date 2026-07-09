@@ -16,13 +16,17 @@ Add the following dependency to your pom.xml:
 <dependency>
   <groupId>com.github.pagehelper</groupId>
   <artifactId>pagehelper-spring-boot-starter</artifactId>
-  <version>4.1.0</version>
+  <version>4.1.1</version>
 </dependency>
 ```
 
 ## 微信公众号
 
 <img src="wx_mybatis.jpg" height="300"/>
+
+## v4.1.1 - 2026-07-09
+
+- 修复配置文件中 kebab-case 风格的配置项失效的问题，新增 `PageHelperStandardProperties` 用于正确绑定 Spring Boot 属性
 
 ## v4.1.0 - 2026-05-29
 
