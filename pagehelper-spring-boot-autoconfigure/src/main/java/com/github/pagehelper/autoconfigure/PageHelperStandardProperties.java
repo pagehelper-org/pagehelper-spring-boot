@@ -21,7 +21,7 @@ import java.util.Optional;
  */
 @ConfigurationProperties(prefix = PageHelperProperties.PAGEHELPER_PREFIX)
 public class PageHelperStandardProperties {
-    private final PageHelperProperties properties;
+    private PageHelperProperties properties;
     private Boolean offsetAsPageNum;
     private Boolean rowBoundsWithCount;
     private Boolean pageSizeZero;
@@ -54,6 +54,10 @@ public class PageHelperStandardProperties {
     private String msCountCache;
     private String aggregateFunctions;
     private Integer asyncCountParallelism;
+
+    public PageHelperStandardProperties() {
+        this(new PageHelperProperties());
+    }
 
     @Autowired
     public PageHelperStandardProperties(PageHelperProperties properties) {
