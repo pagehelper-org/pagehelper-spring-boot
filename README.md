@@ -26,6 +26,7 @@ Add the following dependency to your pom.xml:
 
 ## v4.1.1 - 2026-07-09
 
+- 升级 spring-boot-dependencies 到 4.1.0
 - 修复配置文件中 kebab-case 风格的配置项失效的问题，新增 `PageHelperStandardProperties` 用于正确绑定 Spring Boot 属性
 
 ## v4.1.0 - 2026-05-29
