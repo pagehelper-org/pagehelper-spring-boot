@@ -72,7 +72,7 @@
         <mybatis.version>3.5.19</mybatis.version>
         <pagehelper.version>6.1.1</pagehelper.version>
         <mybatis-spring-boot.version>4.0.1</mybatis-spring-boot.version>
-        <spring-boot.version>4.0.2</spring-boot.version>
+        <spring-boot.version>4.1.0</spring-boot.version>
     </properties>
 
     <dependencyManagement>
