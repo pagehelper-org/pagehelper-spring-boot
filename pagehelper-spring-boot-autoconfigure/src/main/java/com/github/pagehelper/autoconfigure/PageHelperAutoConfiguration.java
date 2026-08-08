@@ -42,7 +42,7 @@ import java.util.Map;
  *
  * @author liuzh
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnBean(SqlSessionFactory.class)
 @EnableConfigurationProperties({PageHelperProperties.class, PageHelperStandardProperties.class,
     SqlSessionFactoryIsolatedPageHelperProperties.class})

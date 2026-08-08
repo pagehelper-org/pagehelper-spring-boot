@@ -157,6 +157,15 @@ public class PageHelperProperties extends Properties {
         setProperty("asyncCount", asyncCount.toString());
     }
 
+    public Integer getAsyncCountParallelism() {
+        String value = getProperty("asyncCountParallelism");
+        return value != null ? Integer.valueOf(value) : null;
+    }
+
+    public void setAsyncCountParallelism(Integer asyncCountParallelism) {
+        setProperty("asyncCountParallelism", asyncCountParallelism.toString());
+    }
+
     public String getCountSqlParser() {
         return getProperty("countSqlParser");
     }
@@ -187,5 +196,45 @@ public class PageHelperProperties extends Properties {
 
     public Boolean getBannerEnabled() {
         return Boolean.valueOf(getProperty("banner"));
+    }
+
+    public Boolean getDebug() {
+        return Boolean.valueOf(getProperty("debug"));
+    }
+
+    public void setDebug(Boolean debug) {
+        setProperty("debug", debug.toString());
+    }
+
+    public String getCountSuffix() {
+        return getProperty("countSuffix");
+    }
+
+    public void setCountSuffix(String countSuffix) {
+        setProperty("countSuffix", countSuffix);
+    }
+
+    public String getCountMsIdGen() {
+        return getProperty("countMsIdGen");
+    }
+
+    public void setCountMsIdGen(String countMsIdGen) {
+        setProperty("countMsIdGen", countMsIdGen);
+    }
+
+    public String getMsCountCache() {
+        return getProperty("msCountCache");
+    }
+
+    public void setMsCountCache(String msCountCache) {
+        setProperty("msCountCache", msCountCache);
+    }
+
+    public String getAggregateFunctions() {
+        return getProperty("aggregateFunctions");
+    }
+
+    public void setAggregateFunctions(String aggregateFunctions) {
+        setProperty("aggregateFunctions", aggregateFunctions);
     }
 }
